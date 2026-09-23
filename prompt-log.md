@@ -37,3 +37,13 @@
 - ใส่ task ที่รอ Q-02 ไว้ชัดเจนเพื่อหลีกเลี่ยงการเดาและให้ทีมเลือกคำตอบก่อนเริ่มทำงานจริง
 
 ---
+
+## 2569-09-23 13:40 คำสั่ง: /implement T-01
+
+- เครื่องมือ: Copilot in Codespaces
+- ไฟล์ที่สร้าง/แก้: backend/app/db/models.py, backend/app/db/session.py, backend/app/db/migrations/001_init.py, backend/tests/test_t01_schema.py
+- ผลการรัน: `cd /workspaces/Karn-Kerdsiri && pytest backend/tests/test_t01_schema.py -q`
+- ผลลัพธ์: ผ่าน
+- สิ่งที่เกือบต้องเดาแต่ถามแทน: ไม่มี เพราะ task นี้มีความชัดเจนจาก spec/plan และ T-01 ไม่ต้องคาดเดา Q-02
+
+---
