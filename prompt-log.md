@@ -110,6 +110,16 @@
 - คืนสองไฟล์ app ด้วย `git restore`; ไม่มีการคืนไฟล์ test
 - `specs/001-booking/rtm.md` มีอยู่แล้ว; ปรับ F-03 กลับเป็นข้อค้นพบปัจจุบัน เพราะ code ถูกคืนตามคำสั่ง
 
+---
+
+## 2569-10-07 คำสั่ง: แก้ตาม F-xx ใน specs/001-booking/rtm.md
+
+- ข้อที่แก้: F-02 (เอา national_id ออกจาก request/log), F-04 (ไม่เดารูปแบบ queue number ก่อน Q-02), F-05 (ค้น 30 วัน), F-08 (ทดสอบ 200 requests พร้อมกัน), F-09 (assert ข้อมูล booking และ remaining)
+- F-03 ถูกแก้แล้วก่อนหน้านี้; อัปเดต RTM section 4 ให้ตรงกับผลปัจจุบัน
+- ไม่แก้ test ที่ชื่อขึ้นต้นด้วย test_TC_
+- ข้อที่ยังรอข้อมูล/การตัดสินใจทีม: F-01 (รายละเอียดการตรวจ token กับ IDP), F-06/F-07 (AC สำหรับ requirement), F-10 (แถว test case ที่อนุมัติอ้าง AC ไม่ตรง)
+- ผล `pytest -v`: 8 passed, 1 warning
+
 ### 2569-10-07 แก้รอบที่ 2
 - ทีมสั่งให้นำโค้ดของแถม UC-02 ออก และ commit ด้วย `git add -A && git commit -m "verify v1" && git push`
 - ลบ DELETE /bookings/{booking_id} จาก backend/app/booking/router.py และ cancel_booking จาก backend/app/booking/service.py
