@@ -58,3 +58,30 @@
 - ทีมตรวจแถว TC-BKG-01-1 ถึง TC-BKG-01-3 และสั่งเปลี่ยนสถานะเป็น "ใช้ได้"
 - คำสั่งที่ทีมให้รัน: `git add -A && git commit -m "test cases AC-BKG-01" && git push`
 - ผล test: ไม่ได้รัน; รอบนี้เปลี่ยนสถานะและบันทึกเอกสารเท่านั้น
+
+---
+
+## 2569-10-07 คำสั่ง: /testcases AC-BKG-01 specs/001-booking/
+
+- โหมด: เขียน test (พบแถวสถานะ "ใช้ได้")
+- TC ID ที่เขียน: TC-BKG-01-1, TC-BKG-01-2, TC-BKG-01-3
+- เพิ่ม backend tests 3 รายการใน test_AC_BKG_01.py (เดิม 1 test, หลังแก้ 4 tests); pytest ทั้งชุด: 6 passed, 1 failed
+- TC-BKG-01-1: pytest ผ่าน; Vitest ส่วนแสดงหมายเลขคิว skipped เพราะรอ Q-02
+- TC-BKG-01-2: pytest ไม่ผ่าน เพราะ API ตอบ 201 แทน 409; T-05 (ช่วงเวลาเต็มและตัวเลือกใกล้เคียง) ยังสถานะพร้อมทำ ไม่ได้แก้โค้ดระบบ
+- TC-BKG-01-2: Vitest ไม่ผ่าน เพราะหน้า App ยังไม่มีข้อความ "ช่วงเวลาเต็ม"; T-11 ยังสถานะพร้อมทำ
+- TC-BKG-01-3: pytest ผ่าน (ยังไม่ยืนยันตัวตนแล้วไม่มีรายการจอง)
+- Vitest ทั้งชุด: 1 passed, 1 failed, 1 skipped (รวม setup.test.jsx ที่มีอยู่เดิม)
+- ไฟล์ระบบใน backend/app/ และ frontend/src/ ไม่ได้แก้
+
+---
+
+## 2569-10-07 คำสั่ง: แก้ TC-BKG-01-2 เฉพาะ backend/app/booking/service.py
+
+- ทีมระบุว่า TC-BKG-01-2 ไม่ผ่านเพราะระบบยอมให้จองเมื่อ remaining เป็น 0 และสั่งห้ามแก้ test
+- การแก้ไข: เปลี่ยนเงื่อนไขตรวจที่นั่งใน create_booking จาก `remaining < 0` เป็น `remaining <= 0`
+- ไฟล์ที่แก้: backend/app/booking/service.py เท่านั้น (นอกเหนือจาก prompt-log.md)
+- ผล `cd backend && pytest -v`: 7 passed, 1 warning
+- TC-BKG-01-2 ผ่านแล้ว; ไม่มีการแก้ test
+
+### คำสั่ง commit/push
+- ทีมสั่ง: `git add -A && git commit -m "AC-BKG-01 tests + fix" && git push`
