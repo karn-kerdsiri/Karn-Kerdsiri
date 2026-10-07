@@ -85,3 +85,33 @@
 
 ### คำสั่ง commit/push
 - ทีมสั่ง: `git add -A && git commit -m "AC-BKG-01 tests + fix" && git push`
+
+---
+
+## 2569-10-07 คำสั่ง: /verify specs/001-booking/
+
+- ผล test: pytest 7 passed; Vitest 1 passed, 1 failed, 1 skipped; รวม 8 passed, 1 failed, 1 skipped
+- RTM: 15 แถว; ครบ 0, ยังไม่ถึง 8, รอ Q-xx 0, ช่องโหว่ 7
+- ข้อค้นพบใหม่: F-01 ถึง F-10 (IDP ไม่ตรวจ token จริง, รับ/log national_id, DELETE out of scope, เดา Q-02, ค้น 14 แทน 30 วัน, FR-BKG-01 ไม่มี AC ที่ตรวจเนื้อหา, FR-BKG-06 ไม่มี AC, test concurrency อ่อน, test AC-BKG-01 เดิมตรวจเพียง status, TC-BKG-01-2 อ้าง AC ผิดเรื่อง)
+- ไฟล์ที่แก้: specs/001-booking/rtm.md (สร้างใหม่), prompt-log.md (เพิ่มต่อท้าย); ไม่แก้ source หรือ test
+
+---
+
+## 2569-10-07 คำสั่ง: ลบ endpoint ยกเลิกคิวที่อยู่นอก scope
+
+- ทีมชี้ว่า DELETE /bookings/{id} อ้าง FR-BKG-04 ผิดเรื่อง และ UC-02 (ยกเลิก/เลื่อนคิว) อยู่ใน Out of scope ไม่ใช่เรื่องรอทีมตัดสิน
+- การแก้ไข: ลบ DELETE endpoint จาก backend/app/booking/router.py และลบ cancel_booking จาก backend/app/booking/service.py
+- RTM: คง F-03 เดิม เปลี่ยนชนิดเป็น "อ้าง ID ผิดเรื่อง" พร้อมบันทึกการแก้ไว้ในหัวข้อ "แก้แล้ว"; ไม่เปลี่ยนเป็นคำตัดสินของทีม
+- ผล test: จะบันทึกหลังรัน pytest
+
+### 2569-10-07 แก้รอบที่ 1
+- ทีมสั่งให้ตรวจ `git status`; หากพบไฟล์ใน app/ หรือ tests/ เปลี่ยน ให้คืนไฟล์และบันทึก
+- ผลตรวจ: พบ backend/app/booking/router.py และ backend/app/booking/service.py เปลี่ยนจากการลบ UC-02 หลัง /verify; ไม่มีไฟล์ tests เปลี่ยน
+- คืนสองไฟล์ app ด้วย `git restore`; ไม่มีการคืนไฟล์ test
+- `specs/001-booking/rtm.md` มีอยู่แล้ว; ปรับ F-03 กลับเป็นข้อค้นพบปัจจุบัน เพราะ code ถูกคืนตามคำสั่ง
+
+### 2569-10-07 แก้รอบที่ 2
+- ทีมสั่งให้นำโค้ดของแถม UC-02 ออก และ commit ด้วย `git add -A && git commit -m "verify v1" && git push`
+- ลบ DELETE /bookings/{booking_id} จาก backend/app/booking/router.py และ cancel_booking จาก backend/app/booking/service.py
+- อัปเดต RTM โดยย้าย F-03 ไปหัวข้อ "แก้แล้ว" หลังตรวจไม่พบ route/function ใน source; ไม่กล่าวว่าเป็นเรื่องรอทีมตัดสิน
+- ผล `pytest -v`: 7 passed, 1 warning
