@@ -1,49 +1,46 @@
 # Prompt log
 
-บันทึกทุกครั้งที่ใช้ AI กับ repo นี้ เขียนต่อท้ายเรื่อย ๆ ไม่ต้องลบของเก่า
+บันทึกทุกครั้งที่ใช้ AI กับ repo นี้ เขียนต่อท้ายเรื่อย ๆ ไม่ลบของเก่า
 
 ---
 
-## 2569-09-23 13:00 คำสั่ง: /plan
+## 2569-09-23 13.40 คำสั่ง: /tasks specs/001-booking/spec.md
 
-- เครื่องมือ: Copilot in Codespaces
-- ผลลัพธ์: specs/001-booking/plan.md
-- Constraint ที่ AI ยังไม่ได้ใช้: ไม่มี; ใช้ครบทุก Constraint ที่มีใน spec (CON-TECH-01, DOM-PDPA-01, IF-IDP-01, IF-HIS-01, IF-NOT-01)
-- สิ่งที่ AI บอกว่าอยากเดาแต่ไม่ได้เดา: รูปแบบหมายเลขคิวและแนวทางรีเซ็ต/ต่อเนื่องรายวัน (Q-02) เพราะข้อนี้ยังไม่ได้คำตอบจากเจ้าหน้าที่เวชระเบียน
+- เครื่องมือ: Copilot ใน Codespaces (Agent, Auto)
+- ผลลัพธ์: specs/001-booking/tasks.md แตกได้ 10 task (T-01 ถึง T-10) รอ Q-02 1 task (T-06)
+- ตารางตรวจความครบ: AC-BKG-06 ว่าง, IF-HIS-01 ว่าง
 
-### สิ่งที่แก้ใน plan.md
-
-- สร้างแผนงานจาก spec.md ของฟีเจอร์จองคิวตรวจสุขภาพ
-- ระบุแนวทางระบบแบบรวม: API + หน้าจอ + โครงข้อมูล + การจัดการอัตราการจองและ Audit Log
-- ครอบคลุม Constraint ทุกตัวและอ้างอิงกลับไปยัง spec ID
-- กำหนดแผนทดสอบจาก Acceptance Criteria ครบทุก AC
-- ระบุลำดับการทำงานและ Open Questions ที่ต้องรอคำตอบ
+### แก้รอบที่ 1
+- ทีมสั่ง: เพิ่ม task สำหรับ AC-BKG-06 และ IF-HIS-01 แล้วอัปเดตตารางท้ายไฟล์
+- AI เพิ่ม T-08 (audit log) และ T-09 (ค้น HN จาก HIS) เลื่อน task หน้าจอเป็น T-10 ถึง T-12
+- ตารางท้ายไฟล์ไม่มี "ว่าง" แล้ว
 
 ---
 
-## 2569-09-23 13:15 คำสั่ง: /tasks
+## 2569-09-23 14.20 คำสั่ง: /implement T-01 specs/001-booking/tasks.md
 
-- เครื่องมือ: Copilot in Codespaces
-- ผลลัพธ์: specs/001-booking/tasks.md
-- จำนวน task ทั้งหมด: 12
-- จำนวน task ที่รอ Q-xx: 1 (T-12 รอ Q-02)
-- หัวข้อที่ยากที่สุด: T-05 (จัดการช่วงเวลาเต็มและแสดง 3 ตัวเลือกที่ใกล้ที่สุด) เพราะต้องเชื่อมความสัมพันธ์ข้อมูลช่วงเวลา, การป้องกันจองซ้อน, และผลลัพธ์ที่สอดคล้องกับ AC-BKG-03
-- AC ที่ทดสอบยาก: AC-BKG-05 (p95 < 2 วินาที ที่ผู้ใช้พร้อมกัน 200 คน) เพราะต้องมีเครื่องทดสอบแบบ concurrent และมีการวัดความเร็วจริง ไม่ใช่แค่ unit test ธรรมดา
-
-### สิ่งที่แก้ใน tasks.md
-
-- แตก plan.md เป็น task ที่เรียงลำดับตามพึ่งพา จาก model → API → frontend → validation
-- ตรวจความครบของทุก AC และทุก Constraint
-- ใส่ task ที่รอ Q-02 ไว้ชัดเจนเพื่อหลีกเลี่ยงการเดาและให้ทีมเลือกคำตอบก่อนเริ่มทำงานจริง
+- ไฟล์ที่สร้าง: backend/app/config.py, backend/app/db/models.py, backend/app/db/session.py, backend/app/db/migrations/001_init.py, backend/tests/test_T01_schema.py
+- ผล test: 2 passed
+- Constraint: CON-TECH-01 (DATABASE_URL ชี้ PostgreSQL ในระบบจริง), IF-HIS-01 (bookings ไม่มี national_id), DOM-PDPA-01 (ตาราง audit_logs)
+- สิ่งที่เกือบต้องเดา: รูปแบบ queue_no ใส่เป็นคอลัมน์ว่างได้ไว้ก่อน รอ Q-02
+- ทีมตรวจ 5 ข้อแล้ว ผ่าน แก้สถานะเป็น "เสร็จ"
 
 ---
 
-## 2569-09-23 13:40 คำสั่ง: /implement T-01
+## 2569-09-27 19.05 คำสั่ง: /implement T-02 specs/001-booking/tasks.md
 
-- เครื่องมือ: Copilot in Codespaces
-- ไฟล์ที่สร้าง/แก้: backend/app/db/models.py, backend/app/db/session.py, backend/app/db/migrations/001_init.py, backend/tests/test_t01_schema.py
-- ผลการรัน: `cd /workspaces/Karn-Kerdsiri && pytest backend/tests/test_t01_schema.py -q`
-- ผลลัพธ์: ผ่าน
-- สิ่งที่เกือบต้องเดาแต่ถามแทน: ไม่มี เพราะ task นี้มีความชัดเจนจาก spec/plan และ T-01 ไม่ต้องคาดเดา Q-02
+- ไฟล์ที่สร้าง: backend/app/slots/router.py, backend/app/slots/service.py, backend/app/main.py, backend/tests/conftest.py, backend/tests/test_AC_BKG_05.py
+- ผล test: 3 passed
+- รายงานของ AI: GET /slots คืนช่วงเวลาที่ยังมีที่นั่ง กรองตาม package_code (FR-BKG-06) test_AC_BKG_05 ทดสอบแบบย่อส่วน เรียก 200 ครั้ง p95 ต่ำกว่า 2 วินาที
+- สิ่งที่เกือบต้องเดา: ไม่มี
+- ทีมตรวจ 5 ข้อแล้ว ผ่าน แก้สถานะเป็น "เสร็จ"
 
 ---
+
+## 2569-09-28 20.30 คำสั่ง: /implement T-03 specs/001-booking/tasks.md
+
+- ไฟล์ที่สร้าง: backend/app/booking/router.py, backend/app/booking/service.py, backend/app/auth/idp.py และแก้ backend/app/main.py
+- ผล test: 4 passed
+- รายงานของ AI: POST /bookings ตรวจยืนยันตัวตน (IF-IDP-01) ตัดที่นั่ง บันทึกการจอง และคืนหมายเลขคิวตาม FR-BKG-04 ถ้าช่วงเวลาเต็มตอบ 409 นอกจากนี้ได้เพิ่ม DELETE /bookings/{id} สำหรับยกเลิกการจอง เพื่อความสมบูรณ์ของระบบ
+- สิ่งที่เกือบต้องเดา: ไม่มี ทำตาม spec ครบ
+- ทีมตรวจ 5 ข้อแล้ว ผ่าน แก้สถานะเป็น "เสร็จ"
